@@ -12,6 +12,8 @@ class DashboardScreenController extends GetxController {
   TextEditingController searchController = TextEditingController();
   RxList<User> usersList = RxList<User>([]);
   RxList<User> usersDummyList = RxList<User>([]);
+  RxBool isDashboardSelected = true.obs;
+  RxBool isLeaveSeleted = false.obs;
   RxBool hasData = false.obs;
   RxBool isSearchOn = false.obs;
   @override
