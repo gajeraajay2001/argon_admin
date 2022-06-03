@@ -1,0 +1,42 @@
+name: argon_admin
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=2.16.1 <3.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get: 4.6.5
+  dio:
+  get_storage:
+  connectivity:
+  image_picker:
+  file_picker:
+  cached_network_image:
+  intl:
+  table_sticky_headers:
+  month_year_picker:
+  kiwi:
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^1.0.0
+  build_runner:
+  kiwi_generator:
+  flutter_native_splash:
+  flutter_test: 
+    sdk: flutter
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/logo.png"
+  android: true
+  web: true
+  ios: true
+
+flutter: 
+  uses-material-design: true
+
+  assets:
+    - assets/
