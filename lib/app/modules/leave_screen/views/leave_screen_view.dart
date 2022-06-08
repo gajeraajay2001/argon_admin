@@ -134,7 +134,8 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                                               openDialogForLeave(
                                                   context: context,
                                                   leaveData: controller
-                                                      .allLeaveList[index]);
+                                                      .allLeaveList[index],
+                                                  controller: controller);
                                             },
                                             child: Container(
                                                 padding: Spacing.symmetric(
@@ -205,7 +206,9 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
   }
 
   openDialogForLeave(
-      {required BuildContext context, required LeaveData leaveData}) {
+      {required BuildContext context,
+      required LeaveData leaveData,
+      required LeaveScreenController controller}) {
     return showDialog(
         context: context,
         builder: (context) {
