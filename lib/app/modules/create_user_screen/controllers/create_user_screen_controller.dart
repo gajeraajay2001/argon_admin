@@ -4,6 +4,7 @@ import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/app/data/NetworkClient.dart';
 import 'package:argon_admin/app/models/all_users_data_model.dart';
+import 'package:argon_admin/app/modules/all_user_list/controllers/all_user_list_controller.dart';
 import 'package:argon_admin/app/routes/app_pages.dart';
 import 'package:argon_admin/utilities/custome_dialog.dart';
 import 'package:dio/dio.dart';
@@ -32,6 +33,7 @@ class CreateUserScreenController extends GetxController {
   DateTime dateTime = DateTime.now();
   RxBool isForEdit = false.obs;
   RxBool hasData = true.obs;
+  AllUserListController? allUserListController;
   User? user;
   RxString imageFromServer = "".obs;
   RxList roleList = [
@@ -42,6 +44,10 @@ class CreateUserScreenController extends GetxController {
   ].obs;
   @override
   void onInit() {
+    Get.lazyPut<AllUserListController>(
+      () => AllUserListController(),
+    );
+    allUserListController = Get.find<AllUserListController>();
     selectedDate.value = "${dateTime.year}/${dateTime.month}/${dateTime.day}";
     print("Testing:= ${box.read(ArgumentConstant.userEmailForEdit)}");
     if (box.read(ArgumentConstant.isForEdit) != null &&
@@ -125,7 +131,7 @@ class CreateUserScreenController extends GetxController {
         Map<String, dynamic> data = jsonDecode(response);
         print(data["status"]);
         if (data["status"] == 0) {
-          Get.offAllNamed(Routes.ALL_USER_LIST);
+          Get.offAllNamed(Routes.DASHBOARD_SCREEN);
         } else {
           app
               .resolve<CustomDialogs>()
@@ -223,8 +229,9 @@ class CreateUserScreenController extends GetxController {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
         print("Response   ddd $response");
         box.write(ArgumentConstant.isForEdit, false);
-        Get.offAllNamed(Routes.ALL_USER_LIST);
-
+        // Get.offAllNamed(Routes.DASHBOARD_SCREEN);
+        allUserListController!.getAllUsers(context: context);
+        Get.back();
         // String res = response.toString();
         // res = res.substring(0);
         // Map<String, dynamic> data = jsonDecode(res);

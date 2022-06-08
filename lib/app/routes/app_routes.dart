@@ -10,6 +10,7 @@ abstract class Routes {
   static const LEAVE_SCREEN = _Paths.LEAVE_SCREEN;
   static const LOGIN_PAGE = _Paths.LOGIN_PAGE;
   static const DASHBOARD_SCREEN = _Paths.DASHBOARD_SCREEN;
+  static const APPLY_HOLIDAY = _Paths.APPLY_HOLIDAY;
 }
 
 abstract class _Paths {
@@ -22,4 +23,5 @@ abstract class _Paths {
   static const LEAVE_SCREEN = '/leave-screen';
   static const LOGIN_PAGE = '/login-page';
   static const DASHBOARD_SCREEN = '/dashboard-screen';
+  static const APPLY_HOLIDAY = '/apply-holiday';
 }

@@ -14,6 +14,7 @@ class DashboardScreenController extends GetxController {
   RxList<User> usersDummyList = RxList<User>([]);
   RxBool isDashboardSelected = true.obs;
   RxBool isLeaveSeleted = false.obs;
+  RxBool isHolidaySeleted = false.obs;
   RxBool hasData = false.obs;
   RxBool isSearchOn = false.obs;
   @override
@@ -56,7 +57,7 @@ class DashboardScreenController extends GetxController {
         app
             .resolve<CustomDialogs>()
             .getDialog(title: "Failed", desc: "Something went wrong.");
-        print(" error ");
+        print("error");
       },
     );
   }

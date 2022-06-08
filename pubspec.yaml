@@ -10,6 +10,7 @@ dependencies:
   get: 4.6.5
   dio:
   get_storage:
+  syncfusion_flutter_datepicker:
   connectivity:
   image_picker:
   file_picker:

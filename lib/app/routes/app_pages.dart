@@ -4,6 +4,8 @@ import '../../main.dart';
 import '../constants/api_constant.dart';
 import '../modules/all_user_list/bindings/all_user_list_binding.dart';
 import '../modules/all_user_list/views/all_user_list_view.dart';
+import '../modules/apply_holiday/bindings/apply_holiday_binding.dart';
+import '../modules/apply_holiday/views/apply_holiday_view.dart';
 import '../modules/create_user_screen/bindings/create_user_screen_binding.dart';
 import '../modules/create_user_screen/views/create_user_screen_view.dart';
 import '../modules/dashboard_screen/bindings/dashboard_screen_binding.dart';
@@ -60,6 +62,11 @@ class AppPages {
       name: _Paths.DASHBOARD_SCREEN,
       page: () => DashboardScreenView(),
       binding: DashboardScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.APPLY_HOLIDAY,
+      page: () => ApplyHolidayView(),
+      binding: ApplyHolidayBinding(),
     ),
   ];
 }

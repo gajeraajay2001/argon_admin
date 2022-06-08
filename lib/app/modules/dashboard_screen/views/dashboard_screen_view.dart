@@ -2,6 +2,7 @@ import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/app/constants/color_constant.dart';
 import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/app/modules/all_user_list/views/all_user_list_view.dart';
+import 'package:argon_admin/app/modules/apply_holiday/views/apply_holiday_view.dart';
 import 'package:argon_admin/app/modules/leave_screen/views/leave_screen_view.dart';
 import 'package:argon_admin/main.dart';
 import 'package:argon_admin/utilities/text_field.dart';
@@ -47,6 +48,7 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                         onTap: () {
                           controller.isDashboardSelected.value = true;
                           controller.isLeaveSeleted.value = false;
+                          controller.isHolidaySeleted.value = false;
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,6 +76,7 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                         onTap: () {
                           controller.isDashboardSelected.value = false;
                           controller.isLeaveSeleted.value = true;
+                          controller.isHolidaySeleted.value = false;
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,6 +91,34 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                             Space.width(20),
                             Text(
                               "Leave",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: MySize.getScaledSizeHeight(20)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Space.height(30),
+                      InkWell(
+                        onTap: () {
+                          controller.isDashboardSelected.value = false;
+                          controller.isLeaveSeleted.value = false;
+                          controller.isHolidaySeleted.value = true;
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: MySize.getScaledSizeHeight(30),
+                                width: MySize.getScaledSizeWidth(30),
+                                child: const Image(
+                                  image: AssetImage("assets/ic_leave.png"),
+                                  fit: BoxFit.contain,
+                                )),
+                            Space.width(20),
+                            Text(
+                              "Holiday",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -191,7 +222,9 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                                   top: MySize.getScaledSizeHeight(
                                       (controller.isDashboardSelected.isTrue)
                                           ? 90
-                                          : 150)),
+                                          : ((controller.isLeaveSeleted.isTrue)
+                                              ? 150
+                                              : 210))),
                               alignment: Alignment.center,
                               child: const Image(
                                 image: AssetImage("assets/Rectangle 4.png"),
@@ -214,7 +247,9 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                                       child: (controller
                                               .isDashboardSelected.isTrue)
                                           ? AllUserListView()
-                                          : LeaveScreenView()),
+                                          : ((controller.isLeaveSeleted.isTrue)
+                                              ? LeaveScreenView()
+                                              : ApplyHolidayView())),
                                 ),
                               ],
                             ),

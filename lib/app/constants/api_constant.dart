@@ -10,6 +10,7 @@ class ApiConstant {
   static const userMonthData = "user_month_data.php";
   static const updateAttendance = "update_attendance.php";
   static const leave = "leave.php";
+  static const holiday = "holiday.php";
   static const adminLogin = "admin_login.php";
 }
 
