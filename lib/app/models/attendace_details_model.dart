@@ -1,8 +1,10 @@
 import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AttendanceDetailsModel {
   String? date;
+  RxBool isSelected = false.obs;
   List<Data>? data = [];
 
   AttendanceDetailsModel({this.date, this.data});

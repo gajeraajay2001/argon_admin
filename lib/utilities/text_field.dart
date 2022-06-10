@@ -25,6 +25,7 @@ TextFormField getTextField({
   Callback? onTap,
   Color? borderColor,
   FunctionStringCallback? onChanged,
+  FunctionStringCallback? onSubmitted,
 }) {
   return TextFormField(
     controller: textEditingController,
@@ -37,6 +38,7 @@ TextFormField getTextField({
     onTap: onTap,
     onChanged: onChanged,
     inputFormatters: textInputFormatter,
+    onFieldSubmitted: onSubmitted,
     cursorColor: appTheme.primaryTheme,
     decoration: InputDecoration(
       fillColor: fillColor,

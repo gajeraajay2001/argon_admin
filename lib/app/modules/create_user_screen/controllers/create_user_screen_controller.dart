@@ -125,11 +125,11 @@ class CreateUserScreenController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
-        print(response);
+
         // String res = response.toString();
         // res = res.substring(1);
         Map<String, dynamic> data = jsonDecode(response);
-        print(data["status"]);
+
         if (data["status"] == 0) {
           Get.offAllNamed(Routes.DASHBOARD_SCREEN);
         } else {
@@ -163,9 +163,7 @@ class CreateUserScreenController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         hasData.value = true;
-        print("Response:::::::::: ==== $response");
         user = User.fromJson(response["data"]);
-        print(user!.name);
         firstNameController.text = user!.name!;
         lastNameController.text = "NA";
         emailController.text = user!.email!;
@@ -217,7 +215,7 @@ class CreateUserScreenController extends GetxController {
           )
         : "${imageFromServer.value}";
     FormData formData = FormData.fromMap(dict);
-    print("REQUEST := $dict");
+
     return NetworkClient.getInstance.callApi(
       context,
       baseUrl,
@@ -227,7 +225,7 @@ class CreateUserScreenController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
-        print("Response   ddd $response");
+
         box.write(ArgumentConstant.isForEdit, false);
         // Get.offAllNamed(Routes.DASHBOARD_SCREEN);
         allUserListController!.getAllUsers(context: context);

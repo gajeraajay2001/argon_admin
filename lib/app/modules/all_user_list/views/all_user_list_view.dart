@@ -32,203 +32,205 @@ class AllUserListView extends GetWidget<AllUserListController> {
                         )
                       : Padding(
                           padding: Spacing.only(left: 70, right: 100),
-                          child: Wrap(
-                              alignment: WrapAlignment.start,
-                              crossAxisAlignment: WrapCrossAlignment.start,
-                              spacing: MySize.getScaledSizeWidth(25),
-                              runSpacing: MySize.getScaledSizeHeight(25),
-                              children: List.generate(
-                                  controller.usersList.length, (index) {
-                                return InkWell(
-                                  onTap: () {
-                                    box.write(
-                                        ArgumentConstant.userEmailForDetail,
-                                        controller.usersList[index].email);
-                                    Get.toNamed(Routes.DETAIL_SCREEN);
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: MySize.getScaledSizeHeight(160),
-                                    width: MySize.getScaledSizeWidth(340),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(
-                                            MySize.getScaledSizeHeight(40))),
-                                    padding: Spacing.symmetric(
-                                        horizontal: 20, vertical: 20),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            InkWell(
-                                              child: ClipRRect(
-                                                child: Container(
-                                                  child: getImageByLink(
-                                                    boxFit: BoxFit.cover,
-                                                    url: imageUrl +
-                                                        controller
-                                                            .usersList[index]
-                                                            .img!,
-                                                    height: 50,
-                                                    width: 50,
+                          child: SingleChildScrollView(
+                            child: Wrap(
+                                alignment: WrapAlignment.start,
+                                crossAxisAlignment: WrapCrossAlignment.start,
+                                spacing: MySize.getWidth(25),
+                                runSpacing: MySize.getHeight(25),
+                                children: List.generate(
+                                    controller.usersList.length, (index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      box.write(
+                                          ArgumentConstant.userEmailForDetail,
+                                          controller.usersList[index].email);
+                                      controller.dashboardScreenControllerl!
+                                          .isDetailsSelected.value = true;
+                                      // Get.toNamed(Routes.DETAIL_SCREEN);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: MySize.getHeight(160),
+                                      width: MySize.getWidth(340),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(
+                                              MySize.getHeight(40))),
+                                      padding: Spacing.symmetric(
+                                          horizontal: 20, vertical: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              InkWell(
+                                                child: ClipRRect(
+                                                  child: Container(
+                                                    child: getImageByLink(
+                                                      boxFit: BoxFit.cover,
+                                                      url: imageUrl +
+                                                          controller
+                                                              .usersList[index]
+                                                              .img!,
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                    height: MySize.getHeight(
+                                                        MySize.getHeight(70)),
+                                                    width: MySize.getWidth(70),
                                                   ),
-                                                  height: MySize
-                                                      .getScaledSizeHeight(MySize
-                                                          .getScaledSizeHeight(
-                                                              70)),
-                                                  width:
-                                                      MySize.getScaledSizeWidth(
-                                                          70),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          MySize.getHeight(
+                                                              1000)),
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(MySize
-                                                        .getScaledSizeHeight(
-                                                            1000)),
+                                                onTap: () {
+                                                  openImageDialog(
+                                                      context: context,
+                                                      imageLink: imageUrl +
+                                                          controller
+                                                              .usersList[index]
+                                                              .img!);
+                                                },
                                               ),
-                                              onTap: () {
-                                                openImageDialog(
-                                                    context: context,
-                                                    imageLink: imageUrl +
-                                                        controller
-                                                            .usersList[index]
-                                                            .img!);
-                                              },
-                                            ),
-                                            Space.width(20),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${controller.usersList[index].name![0].toUpperCase()}${controller.usersList[index].name!.substring(1)}",
-                                                  style: TextStyle(
-                                                      fontSize: MySize
-                                                          .getScaledSizeHeight(
-                                                              18),
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Space.height(10),
-                                                Text(
-                                                  controller
-                                                      .usersList[index].role!
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: MySize
-                                                          .getScaledSizeHeight(
-                                                              13),
-                                                      color: Color(0xff626262),
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Space.height(10),
-                                                Text(
-                                                  controller
-                                                      .usersList[index].mobile!
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: MySize
-                                                          .getScaledSizeHeight(
-                                                              13),
-                                                      color: Color(0xff626262),
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Space.height(10),
-                                                Row(
-                                                  children: [
-                                                    InkWell(
-                                                      onTap: () {
-                                                        box.write(
-                                                            ArgumentConstant
-                                                                .userEmailForEdit,
-                                                            controller
-                                                                .usersList[
-                                                                    index]
-                                                                .email);
-                                                        box.write(
-                                                            ArgumentConstant
-                                                                .isForEdit,
-                                                            true);
-                                                        Get.toNamed(Routes
-                                                            .CREATE_USER_SCREEN);
-                                                      },
-                                                      child: Container(
-                                                        height: MySize
-                                                            .getScaledSizeHeight(
-                                                                30),
-                                                        width: MySize
-                                                            .getScaledSizeWidth(
-                                                                80),
-                                                        decoration: BoxDecoration(
-                                                            color: Color(
-                                                                0xfff3fbff),
-                                                            borderRadius: BorderRadius
-                                                                .circular(MySize
-                                                                    .getScaledSizeHeight(
-                                                                        5))),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          "Edit",
-                                                          style: TextStyle(
-                                                              color: appTheme
-                                                                  .primaryTheme),
+                                              Space.width(20),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${controller.usersList[index].name![0].toUpperCase()}${controller.usersList[index].name!.substring(1)}",
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            MySize.getHeight(
+                                                                18),
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Space.height(10),
+                                                  Text(
+                                                    controller
+                                                        .usersList[index].role!
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            MySize.getHeight(
+                                                                13),
+                                                        color:
+                                                            Color(0xff626262),
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Space.height(10),
+                                                  Text(
+                                                    controller.usersList[index]
+                                                        .mobile!
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            MySize.getHeight(
+                                                                13),
+                                                        color:
+                                                            Color(0xff626262),
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Space.height(10),
+                                                  Row(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          box.write(
+                                                              ArgumentConstant
+                                                                  .userEmailForEdit,
+                                                              controller
+                                                                  .usersList[
+                                                                      index]
+                                                                  .email);
+                                                          box.write(
+                                                              ArgumentConstant
+                                                                  .isForEdit,
+                                                              true);
+                                                          Get.toNamed(Routes
+                                                              .CREATE_USER_SCREEN);
+                                                        },
+                                                        child: Container(
+                                                          height:
+                                                              MySize.getHeight(
+                                                                  30),
+                                                          width:
+                                                              MySize.getWidth(
+                                                                  80),
+                                                          decoration: BoxDecoration(
+                                                              color: Color(
+                                                                  0xfff3fbff),
+                                                              borderRadius: BorderRadius
+                                                                  .circular(MySize
+                                                                      .getHeight(
+                                                                          5))),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "Edit",
+                                                            style: TextStyle(
+                                                                color: appTheme
+                                                                    .primaryTheme),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Space.width(20),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        deleteUserDialog(
-                                                            context: context,
-                                                            user: controller
-                                                                    .usersList[
-                                                                index],
-                                                            controller:
-                                                                controller);
-                                                      },
-                                                      child: Container(
-                                                        height: MySize
-                                                            .getScaledSizeHeight(
-                                                                30),
-                                                        width: MySize
-                                                            .getScaledSizeWidth(
-                                                                80),
-                                                        decoration: BoxDecoration(
-                                                            color: Color(
-                                                                0xfffff8f8),
-                                                            borderRadius: BorderRadius
-                                                                .circular(MySize
-                                                                    .getScaledSizeHeight(
-                                                                        5))),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          "Delete",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.red),
+                                                      Space.width(20),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          deleteUserDialog(
+                                                              context: context,
+                                                              user: controller
+                                                                      .usersList[
+                                                                  index],
+                                                              controller:
+                                                                  controller);
+                                                        },
+                                                        child: Container(
+                                                          height:
+                                                              MySize.getHeight(
+                                                                  30),
+                                                          width:
+                                                              MySize.getWidth(
+                                                                  80),
+                                                          decoration: BoxDecoration(
+                                                              color: Color(
+                                                                  0xfffff8f8),
+                                                              borderRadius: BorderRadius
+                                                                  .circular(MySize
+                                                                      .getHeight(
+                                                                          5))),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "Delete",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              })),
+                                  );
+                                })),
+                          ),
                         ),
                 ),
               ],
@@ -241,20 +243,18 @@ class AllUserListView extends GetWidget<AllUserListController> {
       {required BuildContext context,
       required AllUserListController controller}) {
     return Padding(
-      padding: Spacing.only(
-          left: MySize.getScaledSizeWidth(80), top: 35, right: 100),
+      padding: Spacing.only(left: MySize.getWidth(80), top: 35, right: 100),
       child: Row(
         children: [
           Text(
             "Dashboard",
             style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: MySize.getScaledSizeHeight(30)),
+                fontWeight: FontWeight.w600, fontSize: MySize.getHeight(30)),
           ),
           Spacer(),
           Container(
-            height: MySize.getScaledSizeHeight(40),
-            width: MySize.getScaledSizeWidth(280),
+            height: MySize.getHeight(40),
+            width: MySize.getWidth(280),
             child: getTextField(
               textEditingController: controller.searchController,
               isFillColor: true,
@@ -284,19 +284,18 @@ class AllUserListView extends GetWidget<AllUserListController> {
               Get.toNamed(Routes.CREATE_USER_SCREEN);
             },
             child: Container(
-              height: MySize.getScaledSizeHeight(40),
-              width: MySize.getScaledSizeWidth(125),
+              height: MySize.getHeight(40),
+              width: MySize.getWidth(125),
               padding: Spacing.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(MySize.getScaledSizeHeight(10)),
+                  borderRadius: BorderRadius.circular(MySize.getHeight(10)),
                   color: appTheme.primaryTheme),
               child: Row(
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    height: MySize.getScaledSizeHeight(25),
-                    width: MySize.getScaledSizeWidth(25),
+                    height: MySize.getHeight(25),
+                    width: MySize.getWidth(25),
                     child: Image(image: AssetImage("assets/ic_add.png")),
                   ),
                   Space.width(8),
@@ -305,7 +304,7 @@ class AllUserListView extends GetWidget<AllUserListController> {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
-                        fontSize: MySize.getScaledSizeHeight(17)),
+                        fontSize: MySize.getHeight(17)),
                   )
                 ],
               ),
@@ -322,8 +321,8 @@ class AllUserListView extends GetWidget<AllUserListController> {
         builder: (context) {
           return AlertDialog(
             content: Container(
-              height: MySize.getScaledSizeHeight(400),
-              width: MySize.getScaledSizeWidth(400),
+              height: MySize.getHeight(400),
+              width: MySize.getWidth(400),
               child: getImageByLink(url: imageLink, height: 400, width: 400),
             ),
           );
@@ -344,7 +343,7 @@ class AllUserListView extends GetWidget<AllUserListController> {
                   "Are you sure to delete this user",
                   style: TextStyle(),
                 ),
-                SizedBox(height: MySize.getScaledSizeHeight(20)),
+                SizedBox(height: MySize.getHeight(20)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -353,19 +352,19 @@ class AllUserListView extends GetWidget<AllUserListController> {
                         Get.back();
                       },
                       child: Container(
-                          height: MySize.getScaledSizeHeight(40),
-                          width: MySize.getScaledSizeWidth(100),
+                          height: MySize.getHeight(40),
+                          width: MySize.getWidth(100),
                           decoration: BoxDecoration(
                               color: Colors.blue,
-                              borderRadius: BorderRadius.circular(
-                                  MySize.getScaledSizeHeight(10))),
+                              borderRadius:
+                                  BorderRadius.circular(MySize.getHeight(10))),
                           alignment: Alignment.center,
                           child: Text(
                             "Cancel",
                             style: TextStyle(color: Colors.white),
                           )),
                     ),
-                    SizedBox(width: MySize.getScaledSizeWidth(20)),
+                    SizedBox(width: MySize.getWidth(20)),
                     InkWell(
                       onTap: () {
                         Get.back();
@@ -373,12 +372,12 @@ class AllUserListView extends GetWidget<AllUserListController> {
                             context: context, email: user.email!);
                       },
                       child: Container(
-                          height: MySize.getScaledSizeHeight(40),
-                          width: MySize.getScaledSizeWidth(100),
+                          height: MySize.getHeight(40),
+                          width: MySize.getWidth(100),
                           decoration: BoxDecoration(
                               color: Colors.red,
-                              borderRadius: BorderRadius.circular(
-                                  MySize.getScaledSizeHeight(10))),
+                              borderRadius:
+                                  BorderRadius.circular(MySize.getHeight(10))),
                           alignment: Alignment.center,
                           child: Text(
                             "Delete",

@@ -49,7 +49,7 @@ class LeaveScreenController extends GetxController {
         GetAllLeaveModel res = GetAllLeaveModel.fromJson(jsonDecode(response));
         if (!isNullEmptyOrFalse(res.data)) {
           res.data!.forEach((element) {
-            print("Element := $element");
+
             allLeaveList.add(element);
             dummyLeaveList.add(element);
           });

@@ -13,8 +13,9 @@ class DashboardScreenController extends GetxController {
   RxList<User> usersList = RxList<User>([]);
   RxList<User> usersDummyList = RxList<User>([]);
   RxBool isDashboardSelected = true.obs;
-  RxBool isLeaveSeleted = false.obs;
-  RxBool isHolidaySeleted = false.obs;
+  RxBool isLeaveSelected = false.obs;
+  RxBool isHolidaySelected = false.obs;
+  RxBool isDetailsSelected = false.obs;
   RxBool hasData = false.obs;
   RxBool isSearchOn = false.obs;
   @override

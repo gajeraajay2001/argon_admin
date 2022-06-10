@@ -28,8 +28,8 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                 : SingleChildScrollView(
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MySize.getScaledSizeWidth(200),
-                          vertical: MySize.getScaledSizeHeight(50)),
+                          horizontal: MySize.getWidth(200),
+                          vertical: MySize.getHeight(50)),
                       child: Form(
                         key: controller.formKey,
                         child: Column(
@@ -51,17 +51,14 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                   } else {
                                     fileName = "";
                                   }
-
                                   controller.image!.refresh();
-                                  print(fileName);
-                                  print(controller.image!.value.path);
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(
-                                      MySize.getScaledSizeHeight(1000)),
+                                      MySize.getHeight(1000)),
                                   child: Container(
-                                    height: MySize.getScaledSizeHeight(120),
-                                    width: MySize.getScaledSizeWidth(120),
+                                    height: MySize.getHeight(120),
+                                    width: MySize.getWidth(120),
                                     child: (controller.isForEdit.isTrue &&
                                             !isNullEmptyOrFalse(
                                                 controller.imageFromServer))
@@ -82,18 +79,13 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                                     height: 50,
                                                     width: 50,
                                                   ),
-                                                  height: MySize
-                                                      .getScaledSizeHeight(MySize
-                                                          .getScaledSizeHeight(
-                                                              100)),
-                                                  width:
-                                                      MySize.getScaledSizeWidth(
-                                                          100),
+                                                  height: MySize.getHeight(
+                                                      MySize.getHeight(100)),
+                                                  width: MySize.getWidth(100),
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(MySize
-                                                        .getScaledSizeHeight(
-                                                            1000)),
+                                                    BorderRadius.circular(
+                                                        MySize.getHeight(1000)),
                                               )
                                         : (controller.isImagePicked.isTrue)
                                             ? Image.network(
@@ -109,15 +101,15 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: MySize.getScaledSizeHeight(100)),
+                            SizedBox(height: MySize.getHeight(100)),
                             Center(
                               child: Wrap(
                                   alignment: WrapAlignment.center,
-                                  spacing: MySize.getScaledSizeWidth(100),
-                                  runSpacing: MySize.getScaledSizeHeight(10),
+                                  spacing: MySize.getWidth(100),
+                                  runSpacing: MySize.getHeight(10),
                                   children: [
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Enter First name",
                                             textEditingController:
@@ -129,7 +121,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                               return null;
                                             })),
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Enter Last name",
                                             textEditingController:
@@ -141,7 +133,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                               return null;
                                             })),
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Enter Email address",
                                             readonly:
@@ -157,7 +149,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                               return null;
                                             })),
                                     Container(
-                                      width: MySize.getScaledSizeWidth(500),
+                                      width: MySize.getWidth(500),
                                       child: Row(
                                         children: [
                                           Row(
@@ -190,7 +182,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                       ),
                                     ),
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Enter address",
                                             textEditingController:
@@ -202,8 +194,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                               return null;
                                             })),
                                     PopupMenuButton<int>(
-                                      offset: Offset(
-                                          0, MySize.getScaledSizeHeight(50)),
+                                      offset: Offset(0, MySize.getHeight(50)),
                                       itemBuilder: (context) {
                                         return List.generate(
                                             controller.roleList.length,
@@ -215,31 +206,28 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                                         controller
                                                             .roleList[index];
                                                     controller.role.refresh();
-                                                    print(controller.role
-                                                        .toString());
                                                   },
                                                 ));
                                       },
                                       child: Container(
-                                        height: MySize.getScaledSizeHeight(52),
-                                        width: MySize.getScaledSizeWidth(500),
+                                        height: MySize.getHeight(52),
+                                        width: MySize.getWidth(500),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Colors.grey.shade300),
                                           borderRadius: BorderRadius.circular(
-                                            MySize.getScaledSizeHeight(10),
+                                            MySize.getHeight(10),
                                           ),
                                         ),
                                         padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                MySize.getScaledSizeWidth(16)),
+                                            horizontal: MySize.getWidth(16)),
                                         child: Row(
                                           children: [
                                             Text(
                                               controller.role.value,
                                               style: TextStyle(
-                                                  fontSize: MySize
-                                                      .getScaledSizeHeight(16)),
+                                                  fontSize:
+                                                      MySize.getHeight(16)),
                                             ),
                                             Spacer(),
                                             Icon(Icons.arrow_drop_down,
@@ -249,7 +237,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                       ),
                                     ),
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Enter Mobile number",
                                             textEditingController: controller
@@ -263,7 +251,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                               return null;
                                             })),
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Enter Salary",
                                             textEditingController:
@@ -291,25 +279,24 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                         });
                                       },
                                       child: Container(
-                                        height: MySize.getScaledSizeHeight(52),
-                                        width: MySize.getScaledSizeWidth(500),
+                                        height: MySize.getHeight(52),
+                                        width: MySize.getWidth(500),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Colors.grey.shade300),
                                           borderRadius: BorderRadius.circular(
-                                            MySize.getScaledSizeHeight(10),
+                                            MySize.getHeight(10),
                                           ),
                                         ),
                                         padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                MySize.getScaledSizeWidth(16)),
+                                            horizontal: MySize.getWidth(16)),
                                         child: Row(
                                           children: [
                                             Text(
                                               controller.selectedDate.value,
                                               style: TextStyle(
-                                                  fontSize: MySize
-                                                      .getScaledSizeHeight(16)),
+                                                  fontSize:
+                                                      MySize.getHeight(16)),
                                             ),
                                             Spacer(),
                                             Icon(Icons.calendar_today,
@@ -319,7 +306,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                       ),
                                     ),
                                     Container(
-                                        width: MySize.getScaledSizeWidth(500),
+                                        width: MySize.getWidth(500),
                                         child: getTextField(
                                             hintText: "Create Password",
                                             textEditingController:
@@ -332,7 +319,7 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                             })),
                                   ]),
                             ),
-                            SizedBox(height: MySize.getScaledSizeHeight(40)),
+                            SizedBox(height: MySize.getHeight(40)),
                             Center(
                               child: InkWell(
                                 onTap: () {
@@ -360,13 +347,13 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                   }
                                 },
                                 child: Container(
-                                  height: MySize.getScaledSizeHeight(60),
-                                  width: MySize.getScaledSizeWidth(500),
+                                  height: MySize.getHeight(60),
+                                  width: MySize.getWidth(500),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       color: Colors.blue,
                                       borderRadius: BorderRadius.circular(
-                                          MySize.getScaledSizeHeight(15))),
+                                          MySize.getHeight(15))),
                                   child: Text(
                                     (controller.isForEdit.value)
                                         ? "Update"

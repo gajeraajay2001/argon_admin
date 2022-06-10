@@ -974,11 +974,11 @@ class MySize {
     size470 = scaleFactorHeight * 470;
   }
 
-  static double getScaledSizeWidth(double size) {
+  static double getWidth(double size) {
     return (size * scaleFactorWidth);
   }
 
-  static double getScaledSizeHeight(double size) {
+  static double getHeight(double size) {
     return (size * scaleFactorHeight);
   }
 }
@@ -989,10 +989,10 @@ class Spacing {
   static EdgeInsetsGeometry only(
       {double top = 0, double right = 0, double bottom = 0, double left = 0}) {
     return EdgeInsets.only(
-      left: MySize.getScaledSizeWidth(left),
-      right: MySize.getScaledSizeWidth(right),
-      top: MySize.getScaledSizeHeight(top),
-      bottom: MySize.getScaledSizeHeight(bottom),
+      left: MySize.getWidth(left),
+      right: MySize.getWidth(right),
+      top: MySize.getHeight(top),
+      bottom: MySize.getHeight(bottom),
     );
   }
 
@@ -1003,10 +1003,10 @@ class Spacing {
 
   static EdgeInsetsGeometry all(double spacing) {
     return Spacing.only(
-        bottom: MySize.getScaledSizeHeight(spacing),
-        top: MySize.getScaledSizeHeight(spacing),
-        right: MySize.getScaledSizeWidth(spacing),
-        left: MySize.getScaledSizeWidth(spacing));
+        bottom: MySize.getHeight(spacing),
+        top: MySize.getHeight(spacing),
+        right: MySize.getWidth(spacing),
+        left: MySize.getWidth(spacing));
   }
 
   static EdgeInsetsGeometry left(double spacing) {
@@ -1060,28 +1060,27 @@ class Spacing {
 
   static EdgeInsetsGeometry vertical(double spacing) {
     return Spacing.only(
-        top: MySize.getScaledSizeHeight(spacing),
-        bottom: MySize.getScaledSizeHeight(spacing));
+        top: MySize.getHeight(spacing), bottom: MySize.getHeight(spacing));
   }
 
   static EdgeInsetsGeometry symmetric(
       {double vertical = 0, double horizontal = 0}) {
     return Spacing.only(
-        top: MySize.getScaledSizeHeight(vertical),
-        right: MySize.getScaledSizeWidth(horizontal),
-        left: MySize.getScaledSizeWidth(horizontal),
-        bottom: MySize.getScaledSizeHeight(vertical));
+        top: MySize.getHeight(vertical),
+        right: MySize.getWidth(horizontal),
+        left: MySize.getWidth(horizontal),
+        bottom: MySize.getHeight(vertical));
   }
 
   static Widget height(double height) {
     return SizedBox(
-      height: MySize.getScaledSizeHeight(height),
+      height: MySize.getHeight(height),
     );
   }
 
   static Widget width(double width) {
     return SizedBox(
-      width: MySize.getScaledSizeWidth(width),
+      width: MySize.getWidth(width),
     );
   }
 }
@@ -1091,13 +1090,13 @@ class Space {
 
   static Widget height(double space) {
     return SizedBox(
-      height: MySize.getScaledSizeHeight(space),
+      height: MySize.getHeight(space),
     );
   }
 
   static Widget width(double space) {
     return SizedBox(
-      width: MySize.getScaledSizeWidth(space),
+      width: MySize.getWidth(space),
     );
   }
 }
@@ -1108,7 +1107,7 @@ class Shape {
   static dynamic circular(double radius,
       {ShapeTypeFor shapeTypeFor = ShapeTypeFor.container}) {
     BorderRadius borderRadius =
-        BorderRadius.all(Radius.circular(MySize.getScaledSizeHeight(radius)));
+        BorderRadius.all(Radius.circular(MySize.getHeight(radius)));
 
     switch (shapeTypeFor) {
       case ShapeTypeFor.container:
@@ -1121,8 +1120,8 @@ class Shape {
   static dynamic circularTop(double radius,
       {ShapeTypeFor shapeTypeFor = ShapeTypeFor.container}) {
     BorderRadius borderRadius = BorderRadius.only(
-        topLeft: Radius.circular(MySize.getScaledSizeHeight(radius)),
-        topRight: Radius.circular(MySize.getScaledSizeHeight(radius)));
+        topLeft: Radius.circular(MySize.getHeight(radius)),
+        topRight: Radius.circular(MySize.getHeight(radius)));
     switch (shapeTypeFor) {
       case ShapeTypeFor.container:
         return borderRadius;
@@ -1199,8 +1198,8 @@ CachedNetworkImage getImageByLink(
   return CachedNetworkImage(
     imageUrl: url,
     imageBuilder: (context, imageProvider) => Container(
-      height: MySize.getScaledSizeHeight(height),
-      width: MySize.getScaledSizeWidth(width),
+      height: MySize.getHeight(height),
+      width: MySize.getWidth(width),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: imageProvider,
@@ -1245,4 +1244,8 @@ extension EmailValidator on String {
             r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(this);
   }
+}
+
+String strDigits(int n) {
+  return n.toString().padLeft(2, '0');
 }

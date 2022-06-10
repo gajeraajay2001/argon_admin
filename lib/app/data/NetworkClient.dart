@@ -90,7 +90,6 @@ class NetworkClient {
       case MethodType.Get:
         Response response =
             await dio.get(baseUrl + command, queryParameters: params);
-        print("Reszlonnjnn := ${response}");
 
         parseResponse(context, response,
             successCallback: successCallback!,
@@ -127,7 +126,6 @@ class NetworkClient {
     // app.resolve<CustomDialogs>().showCircularDialog(context);
     String statusCode = "response.data['code']";
     String message = "response.data['message']";
-    print("Status Code := ${response.statusCode}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (isNullEmptyOrFalse(response.data)) {
         successCallback!(response.statusCode, message);

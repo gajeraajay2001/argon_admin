@@ -53,18 +53,18 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                      MySize.getScaledSizeHeight(5),
+                                      MySize.getHeight(5),
                                     ),
                                   ),
                                   child: Container(
-                                    height: MySize.getScaledSizeHeight(40),
-                                    width: MySize.getScaledSizeWidth(120),
+                                    height: MySize.getHeight(40),
+                                    width: MySize.getWidth(120),
                                     padding: Spacing.symmetric(horizontal: 5),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         color: appTheme.primaryTheme,
                                         borderRadius: BorderRadius.circular(
-                                            MySize.getScaledSizeHeight(5))),
+                                            MySize.getHeight(5))),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -86,19 +86,19 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                         Space.height(10),
                         Expanded(
                           child: Wrap(
-                              spacing: MySize.getScaledSizeWidth(10),
-                              runSpacing: MySize.getScaledSizeHeight(10),
+                              spacing: MySize.getWidth(10),
+                              runSpacing: MySize.getHeight(10),
                               children: List.generate(
                                   controller.allLeaveList.length, (index) {
                                 return Container(
-                                  height: MySize.getScaledSizeHeight(220),
-                                  width: MySize.getScaledSizeWidth(260),
+                                  height: MySize.getHeight(220),
+                                  width: MySize.getWidth(260),
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                           color: appTheme.primaryTheme,
-                                          width: MySize.getScaledSizeWidth(2)),
+                                          width: MySize.getWidth(2)),
                                       borderRadius: BorderRadius.circular(
-                                          MySize.getScaledSizeHeight(10))),
+                                          MySize.getHeight(10))),
                                   padding: Spacing.symmetric(
                                       vertical: 10, horizontal: 10),
                                   child: Column(
@@ -154,9 +154,9 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                                                                 "verified")
                                                             ? Colors.green
                                                             : Colors.red,
-                                                    borderRadius: BorderRadius
-                                                        .circular(MySize
-                                                            .getScaledSizeHeight(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            MySize.getHeight(
                                                                 5))),
                                                 child: Text(
                                                   (controller
@@ -190,9 +190,9 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                         //               crossAxisCount: 5,
                         //               childAspectRatio: 1.60,
                         //               crossAxisSpacing:
-                        //                   MySize.getScaledSizeHeight(15),
+                        //                   MySize.getHeight(15),
                         //               mainAxisSpacing:
-                        //                   MySize.getScaledSizeHeight(15)),
+                        //                   MySize.getHeight(15)),
                         //       itemCount: controller.allLeaveList.length,
                         //       itemBuilder: (context, index) {
                         //         return
@@ -230,18 +230,18 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                               id: leaveData.id!);
                         },
                         child: Container(
-                          height: MySize.getScaledSizeHeight(40),
-                          width: MySize.getScaledSizeWidth(100),
+                          height: MySize.getHeight(40),
+                          width: MySize.getWidth(100),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                MySize.getScaledSizeHeight(5)),
+                            borderRadius:
+                                BorderRadius.circular(MySize.getHeight(5)),
                             color: Colors.red,
                           ),
                           child: Text("Reject",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: MySize.getScaledSizeHeight(20))),
+                                  fontSize: MySize.getHeight(20))),
                         ),
                       ),
                       Space.width(20),
@@ -255,18 +255,18 @@ class LeaveScreenView extends GetWidget<LeaveScreenController> {
                               id: leaveData.id!);
                         },
                         child: Container(
-                          height: MySize.getScaledSizeHeight(40),
-                          width: MySize.getScaledSizeWidth(100),
+                          height: MySize.getHeight(40),
+                          width: MySize.getWidth(100),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                MySize.getScaledSizeHeight(5)),
+                            borderRadius:
+                                BorderRadius.circular(MySize.getHeight(5)),
                             color: Colors.green,
                           ),
                           child: Text("Approve",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: MySize.getScaledSizeHeight(20))),
+                                  fontSize: MySize.getHeight(20))),
                         ),
                       ),
                     ],

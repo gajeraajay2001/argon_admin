@@ -51,9 +51,9 @@ class LoginPageView extends GetWidget<LoginPageController> {
                         Space.height(45),
                         Container(
                           padding: EdgeInsets.only(
-                            top: MySize.getScaledSizeHeight(20),
+                            top: MySize.getHeight(20),
                           ),
-                          width: MySize.getScaledSizeWidth(550),
+                          width: MySize.getWidth(550),
                           child: getTextField(
                             textEditingController:
                                 controller.emailController.value,
@@ -75,9 +75,9 @@ class LoginPageView extends GetWidget<LoginPageController> {
                         Obx(() {
                           return Container(
                             padding: EdgeInsets.only(
-                              top: MySize.getScaledSizeHeight(20),
+                              top: MySize.getHeight(20),
                             ),
-                            width: MySize.getScaledSizeWidth(550),
+                            width: MySize.getWidth(550),
                             child: getTextField(
                               textEditingController:
                                   controller.passController.value,
@@ -97,6 +97,15 @@ class LoginPageView extends GetWidget<LoginPageController> {
                                   width: MySize.size25,
                                 ),
                               ),
+                              onSubmitted: (val) {
+                                FocusScope.of(context).unfocus();
+                                if (controller.formKey.currentState!
+                                    .validate()) {
+                                  controller.getSingleUserData(
+                                      context: context);
+                                }
+                              },
+
                               suffixIcon: InkWell(
                                 onTap: () {
                                   controller.passwordVisible.toggle();
@@ -117,9 +126,9 @@ class LoginPageView extends GetWidget<LoginPageController> {
                           );
                         }),
                         Container(
-                          //width: MySize.getScaledSizeWidth(550),
+                          //width: MySize.getWidth(550),
                           padding: EdgeInsets.only(
-                            top: MySize.getScaledSizeHeight(40),
+                            top: MySize.getHeight(40),
                           ),
                           child: InkWell(
                             onTap: () {
@@ -132,7 +141,7 @@ class LoginPageView extends GetWidget<LoginPageController> {
                               textColor: Colors.white,
                               fontsize: MySize.size23,
                               radius: MySize.size20!,
-                              width: MySize.getScaledSizeWidth(220),
+                              width: MySize.getWidth(220),
                               fontWeight: FontWeight.w700,
                               title: "LOG IN",
                             ),
@@ -167,8 +176,8 @@ Container button({
   double? fontsize = 14,
 }) {
   return Container(
-    height: MySize.getScaledSizeHeight(height),
-    width: MySize.getScaledSizeWidth(width),
+    height: MySize.getHeight(height),
+    width: MySize.getWidth(width),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
@@ -185,7 +194,7 @@ Container button({
             style: TextStyle(
                 color: (textColor == null) ? Colors.white : textColor,
                 fontWeight: fontWeight,
-                fontSize: MySize.getScaledSizeHeight(fontsize!)),
+                fontSize: MySize.getHeight(fontsize!)),
           ),
   );
 }

@@ -20,7 +20,7 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
               children: [
                 Expanded(
                   child: Container(
-                    width: MySize.getScaledSizeWidth(500),
+                    width: MySize.getWidth(500),
                     child: Form(
                       key: controller.formKey,
                       child: Column(
@@ -37,7 +37,7 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                           Spacing.height(20),
                           Obx(() {
                             return Container(
-                              width: MySize.getScaledSizeWidth(500),
+                              width: MySize.getWidth(500),
                               child: SfDateRangePicker(
                                 onSelectionChanged:
                                     (DateRangePickerSelectionChangedArgs args) {
@@ -57,7 +57,7 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                           Padding(
                             padding: EdgeInsets.only(top: MySize.size20!),
                             child: Container(
-                              width: MySize.getScaledSizeWidth(500),
+                              width: MySize.getWidth(500),
                               child: Align(
                                 child: Text(
                                   "Holiday Name",
@@ -72,7 +72,7 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                           ),
                           Spacing.height(10),
                           Container(
-                            width: MySize.getScaledSizeWidth(500),
+                            width: MySize.getWidth(500),
                             child: getTextField(
                                 maxLine: 3,
                                 textEditingController:
@@ -129,15 +129,13 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                                 ? ((controller.allHolidayList.isNotEmpty)
                                     ? Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                MySize.getScaledSizeWidth(100)),
+                                            horizontal: MySize.getWidth(100)),
                                         child: ListView.separated(
                                           itemBuilder: (context, i) {
                                             return Container(
                                               padding: EdgeInsets.symmetric(
                                                   horizontal:
-                                                      MySize.getScaledSizeWidth(
-                                                          15),
+                                                      MySize.getWidth(15),
                                                   vertical: MySize.size10!),
                                               decoration: BoxDecoration(
                                                 border: Border.all(
@@ -307,7 +305,7 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                                                   //     //   padding: EdgeInsets
                                                   //     //       .symmetric(
                                                   //     //     horizontal: MySize
-                                                  //     //         .getScaledSizeWidth(
+                                                  //     //         .getWidth(
                                                   //     //             12),
                                                   //     //     vertical:
                                                   //     //         MySize.size10!,

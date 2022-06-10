@@ -2,6 +2,7 @@ import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/app/data/NetworkClient.dart';
 import 'package:argon_admin/app/models/all_users_data_model.dart';
+import 'package:argon_admin/app/modules/dashboard_screen/controllers/dashboard_screen_controller.dart';
 import 'package:argon_admin/main.dart';
 import 'package:argon_admin/utilities/custome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 
 class AllUserListController extends GetxController {
+  DashboardScreenController? dashboardScreenControllerl;
   TextEditingController searchController = TextEditingController();
   RxList<User> usersList = RxList<User>([]);
   RxList<User> usersDummyList = RxList<User>([]);
@@ -16,6 +18,8 @@ class AllUserListController extends GetxController {
   RxBool isSearchOn = false.obs;
   @override
   void onInit() {
+    Get.lazyPut(() => DashboardScreenController());
+    dashboardScreenControllerl = Get.find<DashboardScreenController>();
     getAllUsers(context: Get.context!);
     super.onInit();
   }
@@ -72,7 +76,6 @@ class AllUserListController extends GetxController {
       successCallback: (response, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
         getAllUsers(context: context);
-        print("Response := $response");
       },
       failureCallback: (status, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);

@@ -14,146 +14,392 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
   @override
   Widget build(BuildContext context) {
     MySize().init(context);
-    return Obx(() {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('DetailScreenView'),
-          centerTitle: true,
-          leading: Text(""),
-        ),
-        body: (controller.hasData.isFalse)
-            ? Center(
-                child: CircularProgressIndicator(color: appTheme.primaryTheme),
-              )
-            : Container(
-                padding: Spacing.symmetric(vertical: 15, horizontal: 15),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: GestureDetector(
-                        onTap: () async {
-                          controller.selectedMonth.value =
-                              (await showMonthYearPicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2019),
-                            lastDate: DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                            ),
-                          ))!;
-
-                          if (!isNullEmptyOrFalse(controller.selectedMonth)) {
-                            controller.lastDateOfMonth = getLastDateOfMonth(
-                                date: controller.selectedMonth.value);
-                            controller.getAttendanceDetails(context: context);
-                          }
-                        },
-                        child: Container(
-                          height: MySize.getScaledSizeHeight(40),
-                          width: MySize.getScaledSizeWidth(100),
-                          margin: Spacing.only(
-                              top: MySize.getScaledSizeHeight(10), bottom: 10),
-                          decoration: BoxDecoration(
-                            color: appTheme.primaryTheme,
-                            borderRadius: BorderRadius.circular(
-                                MySize.getScaledSizeHeight(5)),
+    return GetBuilder<DetailScreenController>(
+        init: DetailScreenController(),
+        builder: (controller) {
+          return Obx(() {
+            return Column(
+              children: [
+                Expanded(
+                  child: (controller.hasData.isFalse)
+                      ? Center(
+                          child: CircularProgressIndicator(
+                              color: appTheme.primaryTheme),
+                        )
+                      : Container(
+                          padding: Spacing.only(
+                              left: MySize.getWidth(80), top: 35, right: 100),
+                          child: Column(
+                            children: [
+                              getTopSection(
+                                  context: context, controller: controller),
+                              Space.height(20),
+                              selectDateUi(
+                                  controller: controller, context: context),
+                              Space.height(100),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    getClockInOutEntries(
+                                        context: context,
+                                        controller: controller),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          alignment: Alignment.center,
-                          child: Text(
-                              "${controller.selectedMonth.value.month} / ${controller.selectedMonth.value.year}",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: MySize.getScaledSizeWidth(20))),
+                        ),
+                )
+              ],
+            );
+          });
+        });
+  }
+
+  getTopSection(
+      {required BuildContext context,
+      required DetailScreenController controller}) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Row(children: [
+        InkWell(
+          onTap: () {
+            controller.dashboardScreenController!.isDetailsSelected.value =
+                false;
+            controller.dashboardScreenController!.isDashboardSelected.value =
+                true;
+          },
+          child: Icon(Icons.arrow_back_ios, size: MySize.getWidth(20)),
+        ),
+        Space.width(10),
+        Text(
+          "Detail Screen View",
+          style: TextStyle(
+              fontWeight: FontWeight.w700, fontSize: MySize.getHeight(22)),
+        ),
+      ]),
+      Container(
+        padding: Spacing.symmetric(horizontal: 15, vertical: 5),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(MySize.getHeight(30))),
+        child: Text(
+          controller.totalTime.value,
+          style: TextStyle(
+              color: appTheme.primaryTheme,
+              fontWeight: FontWeight.bold,
+              fontSize: MySize.getHeight(18)),
+        ),
+      ),
+      InkWell(
+        onTap: () async {
+          controller.selectedMonth.value = (await showMonthYearPicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime(
+              DateTime.now().year,
+              DateTime.now().month,
+            ),
+          ))!;
+
+          if (!isNullEmptyOrFalse(controller.selectedMonth)) {
+            controller.selectedIndexForEntry.value = 0;
+            controller.lastDateOfMonth =
+                getLastDateOfMonth(date: controller.selectedMonth.value);
+            controller.getAttendanceDetails(context: context);
+          }
+        },
+        child: Container(
+          height: MySize.getHeight(40),
+          width: MySize.getWidth(150),
+          margin: Spacing.only(top: MySize.getHeight(10), bottom: 10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: appTheme.primaryTheme,
+              width: MySize.getHeight(2),
+            ),
+            borderRadius: BorderRadius.circular(MySize.getHeight(30)),
+          ),
+          alignment: Alignment.center,
+          padding: Spacing.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                  "${DateFormat("MMM").format(controller.selectedMonth.value)} / ${controller.selectedMonth.value.year}",
+                  style: TextStyle(
+                      color: appTheme.primaryTheme,
+                      fontWeight: FontWeight.bold,
+                      fontSize: MySize.getWidth(18))),
+              Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: appTheme.primaryTheme,
+                size: MySize.getHeight(30),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  selectDateUi({
+    required BuildContext context,
+    required DetailScreenController controller,
+  }) {
+    return Container(
+        child: Row(
+      children: List.generate(controller.attendanceDetailsList.length, (index) {
+        return InkWell(
+          onTap: () {
+            controller.selectedIndexForEntry.value = index;
+            controller.dataEntryList.clear();
+            RxList<Data> data2 = RxList<Data>([]);
+            controller.attendanceDetailsList[index].data!.forEach((element) {
+              data2.add(element);
+              controller.dataEntryList.add(element);
+            });
+
+            controller.attendanceDetailsList.forEach((element) {
+              element.isSelected.value = false;
+            });
+
+            controller.attendanceDetailsList[index].isSelected.value = true;
+            controller.totalTime.value = (isNullEmptyOrFalse(
+                    controller.attendanceDetailsList[index].data))
+                ? getTotalTime(0)
+                : getTotalTime(int.parse(controller.dataEntryList.last.total!));
+          },
+          child: Container(
+              margin: Spacing.only(right: 10),
+              padding: Spacing.symmetric(horizontal: 6.5, vertical: 12),
+              decoration: BoxDecoration(
+                  color: (controller
+                          .attendanceDetailsList[index].isSelected.isTrue)
+                      ? appTheme.primaryTheme
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(10000)),
+              child: Text(
+                (index + 1).toString(),
+                style: TextStyle(
+                    color: (controller
+                            .attendanceDetailsList[index].isSelected.isTrue)
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: MySize.getHeight(14),
+                    fontWeight: FontWeight.bold),
+              )),
+        );
+      }),
+    ));
+  }
+
+  getClockInOutEntries(
+      {required BuildContext context,
+      required DetailScreenController controller}) {
+    return Expanded(
+      child: Obx(() {
+        return Center(
+            child: Center(
+          child: Container(
+            width: MySize.getWidth(500),
+            padding: EdgeInsets.only(top: MySize.getHeight(40)),
+            child: Column(
+              children: [
+                Container(
+                  width: MySize.getWidth(550),
+                  height: MySize.getHeight(40),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: MySize.getWidth(40)),
+                  decoration: BoxDecoration(
+                    color: Color(0xffe5e7eb),
+                    borderRadius: BorderRadius.circular(MySize.size25!),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "No.",
+                        style: TextStyle(
+                          fontSize: MySize.size20,
+                          color: Color(0xff626262),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: StickyHeadersTable(
-                              scrollControllers: controller.tableController,
-                              columnsLength: controller.titleColumn.length,
-                              rowsLength:
-                                  controller.attendanceDetailsList.length,
-                              columnsTitleBuilder: (i) => TableCell.stickyRow(
-                                  controller.titleColumn[i]),
-                              rowsTitleBuilder: (i) =>
-                                  TableCell.stickyColumn("${i + 1}"),
-                              contentCellBuilder: (i, j) => TableCell.content(
-                                  getContent(rowIndex: i, columnIndex: j),
-                                  isIcon: (i == 2 || i == 3) ? true : false,
-                                  icon: (i == 2) ? Icons.arrow_forward : null,
-                                  onTap: (i == 2)
-                                      ? () {
-                                          controller
-                                              .selectedIndexForEntry.value = j;
-                                          controller.dataEntryList.clear();
-                                          RxList<Data> data2 = RxList<Data>([]);
-                                          controller
-                                              .attendanceDetailsList[j].data!
-                                              .forEach((element) {
-                                            data2.add(element);
-                                            controller.dataEntryList
-                                                .add(element);
-                                          });
-                                        }
-                                      : null,
-                                  textStyle: TextStyle(
-                                      fontSize:
-                                          MySize.getScaledSizeHeight(12))),
-                              legendCell: TableCell.legend("No"),
-                            ),
-                          ),
-                          Expanded(
-                            child: StickyHeadersTable(
-                              scrollControllers: controller.tableController2,
-                              columnsLength: controller.titleColumn2.length,
-                              rowsLength: controller.dataEntryList.length,
-                              columnsTitleBuilder: (i) => TableCell.stickyRow(
-                                  controller.titleColumn2[i]),
-                              rowsTitleBuilder: (i) =>
-                                  TableCell.stickyColumn("${i + 1}"),
-                              contentCellBuilder: (i, j) => TableCell.content(
-                                  getContact2(rowIndex: i, columnIndex: j),
-                                  isIcon: (i == 2) ? true : false,
-                                  icon: (i == 2) ? Icons.edit : null,
-                                  onTap: (i == 2)
-                                      ? () {
-                                          controller.editTime =
-                                              controller.dataEntryList[j].time!;
-                                          controller.editTimeController.text =
-                                              getStringFromDateTime(
-                                                  time: controller.editTime);
-                                          openEditDialog(
-                                              context: context,
-                                              timeEntryList:
-                                                  controller.dataEntryList,
-                                              selectedIndex: j);
-                                        }
-                                      : null,
-                                  textStyle: TextStyle(
-                                      fontSize:
-                                          MySize.getScaledSizeHeight(12))),
-                              legendCell: TableCell.legend("No"),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "Time",
+                        style: TextStyle(
+                          fontSize: MySize.size20,
+                          color: Color(0xff626262),
+                        ),
                       ),
-                    ),
-                  ],
+                      Text(
+                        "Status",
+                        style: TextStyle(
+                          fontSize: MySize.size20,
+                          color: Color(0xff626262),
+                        ),
+                      ),
+                      Text(
+                        "Edit",
+                        style: TextStyle(
+                          fontSize: MySize.size20,
+                          color: Color(0xff626262),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-      );
-    });
+                Space.height(20),
+                (controller.hasData.value)
+                    ? ((!isNullEmptyOrFalse(controller.dataEntryList))
+                        ? Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  for (int i = 0;
+                                      i < controller.dataEntryList.length;
+                                      i++)
+                                    Container(
+                                      width: MySize.getWidth(500),
+                                      height: MySize.getHeight(40),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: MySize.getWidth(40)),
+                                      margin: EdgeInsets.only(
+                                          bottom: MySize.getHeight(15)),
+                                      decoration: BoxDecoration(
+                                        color: (controller.dataEntryList[i].st
+                                                    .toString()
+                                                    .toUpperCase() ==
+                                                "IN")
+                                            ? Color(0xffe0fefd)
+                                            : Color(0xffffefec),
+                                        borderRadius: BorderRadius.circular(
+                                            MySize.size25!),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                strDigits(i + 1),
+                                                style: TextStyle(
+                                                  fontSize: MySize.size18,
+                                                  color: (controller
+                                                              .dataEntryList[i]
+                                                              .st
+                                                              .toString()
+                                                              .toUpperCase() ==
+                                                          "IN")
+                                                      ? Color(0xff28998f)
+                                                      : Color(0xfffb8266),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                getStringFromDateTime(
+                                                    time: controller
+                                                        .dataEntryList[i]
+                                                        .time!),
+                                                style: TextStyle(
+                                                  fontSize: MySize.size18,
+                                                  color: (controller
+                                                              .dataEntryList[i]
+                                                              .st
+                                                              .toString()
+                                                              .toUpperCase() ==
+                                                          "IN")
+                                                      ? Color(0xff28998f)
+                                                      : Color(0xfffb8266),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Center(
+                                              child: Text(
+                                                "    ${controller.dataEntryList[i].st.toString().toUpperCase()}",
+                                                style: TextStyle(
+                                                  fontSize: MySize.size18,
+                                                  color: (controller
+                                                              .dataEntryList[i]
+                                                              .st
+                                                              .toString()
+                                                              .toUpperCase() ==
+                                                          "IN")
+                                                      ? Color(0xff28998f)
+                                                      : Color(0xfffb8266),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                controller.editTime = controller
+                                                    .dataEntryList[i].time!;
+                                                controller.editTimeController
+                                                        .text =
+                                                    getStringFromDateTime(
+                                                        time: controller
+                                                            .editTime);
+                                                openEditDialog(
+                                                    context: context,
+                                                    timeEntryList: controller
+                                                        .dataEntryList,
+                                                    controller: controller,
+                                                    selectedIndex: i);
+                                              },
+                                              child: Container(
+                                                height: MySize.getHeight(20),
+                                                width: MySize.getWidth(20),
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Image(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage((controller
+                                                              .dataEntryList[i]
+                                                              .st
+                                                              .toString()
+                                                              .toUpperCase() ==
+                                                          "IN")
+                                                      ? "assets/in_edit.png"
+                                                      : "assets/out_edit.png"),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : const Center(
+                            child: Text("No any entry found."),
+                          ))
+                    : const Center(
+                        // child: CircularProgressIndicator(),
+                        ),
+                Space.height(40),
+              ],
+            ),
+          ),
+        ));
+      }),
+    );
   }
 
   openEditDialog(
       {required BuildContext context,
       required RxList<Data> timeEntryList,
-      required int selectedIndex}) {
+      required int selectedIndex,
+      required DetailScreenController controller}) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -171,6 +417,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                           controller.editTime = await openTimePicker(
                               context: context,
                               selectedTime: controller.editTime,
+                              controller: controller,
                               selectedIndex: selectedIndex);
 
                           controller.editTimeController.text =
@@ -186,11 +433,11 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                             Get.back();
                           },
                           child: Container(
-                              height: MySize.getScaledSizeHeight(35),
-                              width: MySize.getScaledSizeWidth(100),
+                              height: MySize.getHeight(35),
+                              width: MySize.getWidth(100),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
-                                      MySize.getScaledSizeHeight(10)),
+                                      MySize.getHeight(10)),
                                   border:
                                       Border.all(color: appTheme.primaryTheme)),
                               alignment: Alignment.center,
@@ -202,15 +449,17 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                             print(
                                 "Update Index := ${controller.selectedIndexForEntry}");
                             updateTimeEntry(
-                                selectedIndex: selectedIndex, context: context);
+                                selectedIndex: selectedIndex,
+                                context: context,
+                                controller: controller);
                           },
                           child: Container(
-                              height: MySize.getScaledSizeHeight(35),
-                              width: MySize.getScaledSizeWidth(100),
+                              height: MySize.getHeight(35),
+                              width: MySize.getWidth(100),
                               decoration: BoxDecoration(
                                   color: appTheme.primaryTheme,
                                   borderRadius: BorderRadius.circular(
-                                      MySize.getScaledSizeHeight(10)),
+                                      MySize.getHeight(10)),
                                   border:
                                       Border.all(color: appTheme.primaryTheme)),
                               alignment: Alignment.center,
@@ -232,7 +481,8 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
   Future<DateTime> openTimePicker(
       {required BuildContext context,
       required DateTime selectedTime,
-      required int selectedIndex}) async {
+      required int selectedIndex,
+      required DetailScreenController controller}) async {
     TimeOfDay? time = await showTimePicker(
         context: context,
         initialTime:
@@ -307,7 +557,10 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
     return controller.editTime;
   }
 
-  updateTimeEntry({required int selectedIndex, required BuildContext context}) {
+  updateTimeEntry(
+      {required int selectedIndex,
+      required BuildContext context,
+      required DetailScreenController controller}) {
     Map<String, dynamic> dict = {};
     if (controller.editTime == controller.dataEntryList[selectedIndex].time) {
       Get.back();
@@ -328,7 +581,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           } else {
             Duration diff = controller.dataEntryList[selectedIndex].time!
                 .difference(controller.editTime);
-            print("Diff:= ${diff.inSeconds}");
+
             controller.dataEntryList[selectedIndex].time = controller.editTime;
 
             for (int i = selectedIndex + 1;
@@ -338,7 +591,6 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                   (int.parse(controller.dataEntryList[i].total!) +
                           diff.inSeconds)
                       .toString();
-              print("Total := ${controller.dataEntryList[i].total}");
             }
             List<Map<String, dynamic>> test = [];
             controller.dataEntryList.forEach((element) {
@@ -372,7 +624,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           } else {
             Duration diff = controller.dataEntryList[selectedIndex].time!
                 .difference(controller.editTime);
-            print("Diff:= ${diff.inSeconds}");
+
             controller.dataEntryList[selectedIndex].time = controller.editTime;
 
             for (int i = selectedIndex + 1;
@@ -382,7 +634,6 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                   (int.parse(controller.dataEntryList[i].total!) +
                           diff.inSeconds)
                       .toString();
-              print("Total := ${controller.dataEntryList[i].total}");
             }
             List<Map<String, dynamic>> test = [];
             controller.dataEntryList.forEach((element) {
@@ -421,7 +672,8 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           dict["data"] = getEncodedJson(
               time1: controller.editTime,
               time2: controller.dataEntryList[selectedIndex].time!,
-              selectedIndex: selectedIndex);
+              selectedIndex: selectedIndex,
+              controller: controller);
         }
       }
     }
@@ -430,7 +682,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           getDateInFormat(date: controller.dataEntryList[selectedIndex].date!);
       dict["email_st"] = controller.dataEntryList[selectedIndex].email;
       Get.back();
-      print(dict);
+
       controller.callUpdateAttendance(context: context, dict: dict);
     }
   }
@@ -439,10 +691,11 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
       {required DateTime time1,
       required DateTime time2,
       required int selectedIndex,
+      required DetailScreenController controller,
       bool isForLast = false}) {
     List<Map<String, dynamic>> test = [];
     Duration diff = time1.difference(time2);
-    print("Diff:= ${diff.inSeconds}");
+
     if (isForLast) {
       controller.dataEntryList[selectedIndex].time = controller.editTime;
       controller.dataEntryList[selectedIndex].total =
@@ -467,7 +720,6 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
         controller.dataEntryList[i].total =
             (int.parse(controller.dataEntryList[i].total!) + diff.inSeconds)
                 .toString();
-        print("Total := ${controller.dataEntryList[i].total}");
       }
 
       controller.dataEntryList.forEach((element) {
@@ -488,7 +740,10 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
     return "${strDigits(date.hour)}:${strDigits(date.minute)}:${strDigits(date.second)}";
   }
 
-  String getContent({required int rowIndex, required int columnIndex}) {
+  String getContent(
+      {required int rowIndex,
+      required int columnIndex,
+      required DetailScreenController controller}) {
     if (rowIndex == 0) {
       return "${DateFormat("dd-MM-yyyy").format(getDateFromString(controller.attendanceDetailsList[columnIndex].date!, formatter: "yyyy-MM-dd"))}";
     } else {
@@ -502,7 +757,10 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
     }
   }
 
-  String getContact2({required int rowIndex, required int columnIndex}) {
+  String getContact2(
+      {required int rowIndex,
+      required int columnIndex,
+      required DetailScreenController controller}) {
     if (rowIndex == 0) {
       return getStringFromTime(
           time: getTimeFromDateTime(
@@ -522,143 +780,18 @@ String getDateInFormat({required DateTime date}) {
 }
 
 String getStringFromDateTime({required DateTime time}) {
-  return "${time.hour}:${time.minute}";
+  return "${strDigits(time.hour)}:${strDigits(time.minute)}:${strDigits(time.second)}";
 }
 
 TimeOfDay getTimeFromDateTime({required DateTime dateTime}) {
   return TimeOfDay(hour: dateTime.hour, minute: dateTime.minute);
 }
 
-getTotalTime(int sec) {
+String getTotalTime(int sec) {
   Duration diff = Duration(seconds: sec);
   // totalSecond = int.parse(checkInOutModel.data!.total.toString());
   String h = strDigits(diff.inHours.remainder(24));
   String mm = strDigits(diff.inMinutes.remainder(60));
   String ss = strDigits(diff.inSeconds.remainder(60));
   return '$h : $mm : $ss';
-}
-
-String strDigits(int n) {
-  return n.toString().padLeft(2, '0');
-}
-
-class TableCell extends StatelessWidget {
-  TableCell.content(
-    this.text, {
-    this.textStyle,
-    this.isIcon = false,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.white,
-    this.onTap,
-    this.icon,
-  })  : cellWidth = cellDimensions.contentCellWidth,
-        cellHeight = cellDimensions.contentCellHeight,
-        _colorHorizontalBorder = Colors.amber,
-        _colorVerticalBorder = Colors.black38,
-        _textAlign = TextAlign.center,
-        _padding = EdgeInsets.zero;
-
-  TableCell.legend(
-    this.text, {
-    this.textStyle,
-    this.isIcon = false,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.amber,
-    this.onTap,
-    this.icon,
-  })  : cellWidth = cellDimensions.stickyLegendWidth,
-        cellHeight = cellDimensions.stickyLegendHeight,
-        _colorHorizontalBorder = Colors.white,
-        _colorVerticalBorder = Colors.amber,
-        _textAlign = TextAlign.start,
-        _padding = EdgeInsets.only(left: 24.0);
-
-  TableCell.stickyRow(
-    this.text, {
-    this.textStyle,
-    this.isIcon = false,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.amber,
-    this.onTap,
-    this.icon,
-  })  : cellWidth = cellDimensions.contentCellWidth,
-        cellHeight = cellDimensions.stickyLegendHeight,
-        _colorHorizontalBorder = Colors.white,
-        _colorVerticalBorder = Colors.amber,
-        _textAlign = TextAlign.center,
-        _padding = EdgeInsets.zero;
-
-  TableCell.stickyColumn(
-    this.text, {
-    this.textStyle,
-    this.isIcon = false,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.white,
-    this.onTap,
-    this.icon,
-  })  : cellWidth = cellDimensions.stickyLegendWidth,
-        cellHeight = cellDimensions.contentCellHeight,
-        _colorHorizontalBorder = Colors.amber,
-        _colorVerticalBorder = Colors.black38,
-        _textAlign = TextAlign.start,
-        _padding = EdgeInsets.only(left: 0.0);
-
-  final CellDimensions cellDimensions;
-
-  final String text;
-  final Function()? onTap;
-  final bool isIcon;
-  final IconData? icon;
-  final double? cellWidth;
-  final double? cellHeight;
-
-  final Color colorBg;
-  final Color _colorHorizontalBorder;
-  final Color _colorVerticalBorder;
-
-  final TextAlign _textAlign;
-  final EdgeInsets _padding;
-
-  final TextStyle? textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: cellWidth,
-        height: cellHeight,
-        padding: _padding,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 2.0),
-                child: (isIcon)
-                    ? Icon(icon)
-                    : Text(
-                        text,
-                        style: textStyle,
-                        maxLines: 2,
-                        textAlign: _textAlign,
-                      ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              height: 1.1,
-              color: _colorVerticalBorder,
-            ),
-          ],
-        ),
-        decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: _colorHorizontalBorder),
-              right: BorderSide(color: _colorHorizontalBorder),
-            ),
-            color: colorBg),
-      ),
-    );
-  }
 }

@@ -52,13 +52,10 @@ class ApplyHolidayController extends GetxController {
     } else {
       dict["date2"] = DateFormat('yyyy-MM-dd').format(range.value.startDate!);
     }
-    dict["select_op"] = "holiday_entry"; //re
-    dict["des"] = reasonController.value.text; //re
+    dict["select_op"] = "holiday_entry";
+    dict["des"] = reasonController.value.text;
 
     FormData data = FormData.fromMap(dict);
-    print(dict);
-    print(data);
-    //hasData.value = false;
 
     return NetworkClient.getInstance.callApi(
       context,
@@ -102,11 +99,9 @@ class ApplyHolidayController extends GetxController {
     Map<String, dynamic> dict = {};
 
     // dict["email"] = box.read(StringConstants.userEmailAddress);
-    dict["select_op"] = "get_all_holiday"; //re
+    dict["select_op"] = "get_all_holiday";
 
     FormData data = FormData.fromMap(dict);
-    print(dict);
-    print(data);
     hasData.value = false;
 
     return NetworkClient.getInstance.callApi(
@@ -131,10 +126,6 @@ class ApplyHolidayController extends GetxController {
           reverse.addAll(holidayListModel.data!);
           allHolidayList.addAll(reverse.reversed.toList());
         }
-
-        //List data = jsonDecode(response) as List;
-
-        //   print(response);
       },
       failureCallback: (status, message) {
         hasData.value = true;
@@ -164,14 +155,7 @@ class ApplyHolidayController extends GetxController {
 
     dict["select_op"] = "delete_holiday";
     dict["id"] = id!;
-    // dict["date_from"] = DateFormat('yyyy-MM-dd').format(range.startDate!);
-    // if (range.endDate != null) {
-    //   dict["date_to"] = DateFormat('yyyy-MM-dd').format(range.endDate!);
-    // }
-
     FormData data = FormData.fromMap(dict);
-    print(dict);
-    print(data);
     hasData.value = false;
 
     return NetworkClient.getInstance.callApi(
@@ -182,7 +166,6 @@ class ApplyHolidayController extends GetxController {
       header: NetworkClient.getInstance.getAuthHeaders(),
       params: data,
       successCallback: (response, message) {
-        print(response);
         hasData.value = true;
 
         if (!isFromButton) {
@@ -190,10 +173,6 @@ class ApplyHolidayController extends GetxController {
         }
         Map<String, dynamic> m = jsonDecode(response) as Map<String, dynamic>;
         callApiForGetHoliday(context: Get.context!, isFromButton: true);
-
-        //List data = jsonDecode(response) as List;
-
-        print(response);
       },
       failureCallback: (status, message) {
         hasData.value = true;
