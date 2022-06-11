@@ -1,3 +1,4 @@
+import 'package:argon_admin/animation/animated_button.dart';
 import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/app/constants/color_constant.dart';
 import 'package:argon_admin/app/constants/sizeConstant.dart';
@@ -40,15 +41,20 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                 runSpacing: MySize.getHeight(25),
                                 children: List.generate(
                                     controller.usersList.length, (index) {
-                                  return InkWell(
-                                    onTap: () {
+                                  return AnimatedButton(
+                                    enabled: true,
+                                    onPressed: () {
                                       box.write(
                                           ArgumentConstant.userEmailForDetail,
                                           controller.usersList[index].email);
                                       controller.dashboardScreenControllerl!
                                           .isDetailsSelected.value = true;
-                                      // Get.toNamed(Routes.DETAIL_SCREEN);
                                     },
+                                    duration: 100,
+                                    color: Colors.transparent,
+                                    shape: BoxShape.rectangle,
+                                    height: MySize.getHeight(160),
+                                    width: MySize.getWidth(340),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: MySize.getHeight(160),
@@ -183,6 +189,8 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                                                     .primaryTheme),
                                                           ),
                                                         ),
+                                                        hoverColor: appTheme
+                                                            .primaryTheme,
                                                       ),
                                                       Space.width(20),
                                                       InkWell(

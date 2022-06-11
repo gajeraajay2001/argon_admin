@@ -9,7 +9,6 @@ import 'package:argon_admin/utilities/custome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:table_sticky_headers/table_sticky_headers.dart';
 import '../../../models/attendace_details_model.dart';
 import '../../../models/holidayDataModel.dart';
 
@@ -27,8 +26,6 @@ class DetailScreenController extends GetxController {
   RxList<AttendanceDetailsModel> attendanceDetailsList =
       RxList<AttendanceDetailsModel>([]);
   RxList<AttendanceDetailsModel> dataList = RxList<AttendanceDetailsModel>([]);
-  ScrollControllers tableController = ScrollControllers();
-  ScrollControllers tableController2 = ScrollControllers();
   RxList<Data> dataEntryList = RxList<Data>([]);
   RxList<HolidayData> allHolidayList = RxList<HolidayData>([]);
   late RxInt selectedIndexForEntry;
@@ -160,7 +157,6 @@ class DetailScreenController extends GetxController {
                 }
               }
             });
-
           }
           if (!isNullEmptyOrFalse(
               attendanceDetailsList[selectedIndexForEntry.value].data)) {

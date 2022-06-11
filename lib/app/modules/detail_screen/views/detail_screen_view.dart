@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
-import 'package:table_sticky_headers/table_sticky_headers.dart';
 import '../../../models/attendace_details_model.dart';
 import '../controllers/detail_screen_controller.dart';
 
@@ -78,7 +77,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
         ),
       ]),
       Container(
-        padding: Spacing.symmetric(horizontal: 15, vertical: 5),
+        padding: Spacing.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(MySize.getHeight(30))),
@@ -87,7 +86,7 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           style: TextStyle(
               color: appTheme.primaryTheme,
               fontWeight: FontWeight.bold,
-              fontSize: MySize.getHeight(18)),
+              fontSize: MySize.getHeight(20)),
         ),
       ),
       InkWell(
@@ -170,7 +169,8 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
                 ? getTotalTime(0)
                 : getTotalTime(int.parse(controller.dataEntryList.last.total!));
           },
-          child: Container(
+          child: AnimatedContainer(
+              duration: Duration(milliseconds: 300),
               margin: Spacing.only(right: 10),
               padding: Spacing.symmetric(horizontal: 6.5, vertical: 12),
               decoration: BoxDecoration(

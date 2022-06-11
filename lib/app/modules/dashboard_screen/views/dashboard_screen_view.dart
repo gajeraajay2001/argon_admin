@@ -41,7 +41,7 @@ class DashboardScreenView extends GetWidget<DashboardScreenController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AnimatedContainer(
-                              duration: Duration(milliseconds: 500),
+                              duration: Duration(milliseconds: 350),
                               height: MySize.getHeight(45),
                               color: const Color(0xff01a7fe),
                               margin: EdgeInsets.only(
