@@ -1,7 +1,8 @@
 import 'package:argon_admin/app/constants/api_constant.dart';
 import 'package:argon_admin/main.dart';
 import 'package:argon_admin/utilities/custome_dialog.dart';
-import 'package:connectivity/connectivity.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,7 @@ class NetworkClient {
     GetStorage box = GetStorage();
     print(box.read(ArgumentConstant.token));
     var connectivityResult = await Connectivity().checkConnectivity();
+    print("Connectivity Result := ${connectivityResult}");
     if (connectivityResult == ConnectivityResult.none) {
       failureCallback!("", "No Internet Connection");
       getDialog(title: "Error", desc: "No Internet Connection.");
@@ -84,7 +86,6 @@ class NetworkClient {
         parseResponse(context, response,
             successCallback: successCallback!,
             failureCallback: failureCallback!);
-
         break;
 
       case MethodType.Get:
@@ -102,6 +103,7 @@ class NetworkClient {
             successCallback: successCallback!,
             failureCallback: failureCallback!);
         break;
+
       case MethodType.Patch:
         Response response = await dio.patch(baseUrl + command, data: params);
         parseResponse(context, response,

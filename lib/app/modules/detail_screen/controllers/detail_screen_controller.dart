@@ -120,7 +120,6 @@ class DetailScreenController extends GetxController {
                         formatter: "yyyy-MM-dd");
                     DateTime holidayDate2 = getDateFromString(element2.date2!,
                         formatter: "yyyy-MM-dd");
-
                     if (getDateFromString(element.date!, formatter: 'yyyy-MM-dd')
                                 .isBefore(holidayDate2) &&
                             getDateFromString(element.date!, formatter: 'yyyy-MM-dd')

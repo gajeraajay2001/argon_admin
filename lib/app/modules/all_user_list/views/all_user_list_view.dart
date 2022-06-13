@@ -41,20 +41,14 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                 runSpacing: MySize.getHeight(25),
                                 children: List.generate(
                                     controller.usersList.length, (index) {
-                                  return AnimatedButton(
-                                    enabled: true,
-                                    onPressed: () {
+                                  return InkWell(
+                                    onTap: () {
                                       box.write(
                                           ArgumentConstant.userEmailForDetail,
                                           controller.usersList[index].email);
                                       controller.dashboardScreenControllerl!
                                           .isDetailsSelected.value = true;
                                     },
-                                    duration: 100,
-                                    color: Colors.transparent,
-                                    shape: BoxShape.rectangle,
-                                    height: MySize.getHeight(160),
-                                    width: MySize.getWidth(340),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: MySize.getHeight(160),
@@ -189,6 +183,7 @@ class AllUserListView extends GetWidget<AllUserListController> {
                                                                     .primaryTheme),
                                                           ),
                                                         ),
+                                                        onHover: (text) {},
                                                         hoverColor: appTheme
                                                             .primaryTheme,
                                                       ),

@@ -5,6 +5,7 @@ import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/main.dart';
 import 'package:argon_admin/utilities/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:path/path.dart' as p;
 import 'package:get/get.dart';
@@ -242,6 +243,12 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                             hintText: "Enter Mobile number",
                                             textEditingController: controller
                                                 .mobileNumberController,
+                                            textInputFormatter: [
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[0-9.,]')),
+                                              LengthLimitingTextInputFormatter(
+                                                  10),
+                                            ],
                                             validator: (val) {
                                               if (isNullEmptyOrFalse(val)) {
                                                 return "Please Enter Mobile Number";
@@ -256,6 +263,12 @@ class CreateUserScreenView extends GetWidget<CreateUserScreenController> {
                                             hintText: "Enter Salary",
                                             textEditingController:
                                                 controller.salaryController,
+                                            textInputFormatter: [
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[0-9.,]')),
+                                              LengthLimitingTextInputFormatter(
+                                                  18),
+                                            ],
                                             validator: (val) {
                                               if (isNullEmptyOrFalse(val)) {
                                                 return "Please Enter Salary";

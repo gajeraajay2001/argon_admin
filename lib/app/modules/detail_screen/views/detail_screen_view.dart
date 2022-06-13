@@ -172,7 +172,9 @@ class DetailScreenView extends GetWidget<DetailScreenController> {
           child: AnimatedContainer(
               duration: Duration(milliseconds: 300),
               margin: Spacing.only(right: 10),
-              padding: Spacing.symmetric(horizontal: 6.5, vertical: 12),
+              alignment: Alignment.center,
+              width: MySize.getWidth(26),
+              padding: Spacing.symmetric(horizontal: 0, vertical: 12),
               decoration: BoxDecoration(
                   color: (controller
                           .attendanceDetailsList[index].isSelected.isTrue)

@@ -11,7 +11,7 @@ dependencies:
   dio:
   get_storage:
   syncfusion_flutter_datepicker:
-  connectivity:
+  connectivity_plus:
   image_picker:
   file_picker:
   cached_network_image:

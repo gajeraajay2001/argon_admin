@@ -5,6 +5,7 @@ import 'package:argon_admin/app/constants/sizeConstant.dart';
 import 'package:argon_admin/app/data/NetworkClient.dart';
 import 'package:argon_admin/app/models/all_users_data_model.dart';
 import 'package:argon_admin/app/modules/all_user_list/controllers/all_user_list_controller.dart';
+import 'package:argon_admin/app/modules/dashboard_screen/controllers/dashboard_screen_controller.dart';
 import 'package:argon_admin/app/routes/app_pages.dart';
 import 'package:argon_admin/utilities/custome_dialog.dart';
 import 'package:dio/dio.dart';
@@ -131,6 +132,7 @@ class CreateUserScreenController extends GetxController {
         Map<String, dynamic> data = jsonDecode(response);
 
         if (data["status"] == 0) {
+          allUserListController!.getAllUsers(context: context);
           Get.offAllNamed(Routes.DASHBOARD_SCREEN);
         } else {
           app
@@ -225,23 +227,10 @@ class CreateUserScreenController extends GetxController {
       params: formData,
       successCallback: (response, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);
-
         box.write(ArgumentConstant.isForEdit, false);
-        // Get.offAllNamed(Routes.DASHBOARD_SCREEN);
         allUserListController!.getAllUsers(context: context);
+
         Get.back();
-        // String res = response.toString();
-        // res = res.substring(0);
-        // Map<String, dynamic> data = jsonDecode(res);
-        // print("RESS:= $res");
-        // if (data["status"] == 0) {
-        //   clearController();
-        //   Get.back();
-        // } else {
-        //   app
-        //       .resolve<CustomDialogs>()
-        //       .getDialog(title: "Failed", desc: data["msg"]);
-        // }
       },
       failureCallback: (status, message) {
         app.resolve<CustomDialogs>().hideCircularDialog(context);

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../../../main.dart';
+import '../../../../utilities/custome_dialog.dart';
 import '../../../constants/color_constant.dart';
 import '../../../constants/sizeConstant.dart';
 import '../controllers/apply_holiday_controller.dart';
@@ -87,8 +89,8 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                           child: FlatButton(
                             onPressed: () {
                               if (controller.formKey.currentState!.validate()) {
-                                controller.callApiForApplyHolidayEntry(
-                                    context: context);
+                                addHoliday(
+                                    context: context, controller: controller);
                               }
                             },
                             color: Colors.blue,
@@ -190,42 +192,6 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                                                           CrossAxisAlignment
                                                               .center,
                                                       children: [
-                                                        // IconButton(
-                                                        //   onPressed: () {
-                                                        //     DateTime
-                                                        //         fromDate =
-                                                        //         getDateFromString(
-                                                        //             controller
-                                                        //                 .allHolidayList[
-                                                        //                     i]
-                                                        //                 .dateFrom
-                                                        //                 .toString(),
-                                                        //             formatter:
-                                                        //                 "yyyy-MM-dd");
-                                                        //     DateTime toDate =
-                                                        //         getDateFromString(
-                                                        //             controller
-                                                        //                 .allHolidayList[
-                                                        //                     i]
-                                                        //                 .dateTo
-                                                        //                 .toString(),
-                                                        //             formatter:
-                                                        //                 "yyyy-MM-dd");
-                                                        //     controller.range
-                                                        //             .value =
-                                                        //         PickerDateRange(
-                                                        //             fromDate,
-                                                        //             toDate);
-                                                        //     print(controller
-                                                        //         .range.value);
-                                                        //   },
-                                                        //   icon: Icon(
-                                                        //     Icons.edit,
-                                                        //     color:
-                                                        //         Colors.blue,
-                                                        //   ),
-                                                        // ),
-                                                        // Space.width(15),
                                                         IconButton(
                                                           onPressed: () {
                                                             _asyncConfirmDialog(
@@ -275,79 +241,6 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
                                                   ],
                                                 ),
                                                 Space.height(10),
-                                                // Row(
-                                                //   children: [
-                                                //     Text(
-                                                //       "Status : ",
-                                                //       style: TextStyle(
-                                                //         color: Colors.black,
-                                                //         fontWeight:
-                                                //             FontWeight.bold,
-                                                //         fontSize:
-                                                //             MySize.size16,
-                                                //       ),
-                                                //     ),
-                                                //     // Space.width(10),
-                                                //     // Container(
-                                                //     //   padding: EdgeInsets
-                                                //     //       .symmetric(
-                                                //     //     horizontal: MySize
-                                                //     //         .getWidth(
-                                                //     //             12),
-                                                //     //     vertical:
-                                                //     //         MySize.size10!,
-                                                //     //   ),
-                                                //     //   decoration:
-                                                //     //       BoxDecoration(
-                                                //     //     color: (controller
-                                                //     //                 .allHolidayList[
-                                                //     //                     i]
-                                                //     //                 .status
-                                                //     //                 .toString() ==
-                                                //     //             "in_verify")
-                                                //     //         ? Colors.brown
-                                                //     //         : (controller
-                                                //     //                     .allHolidayList[
-                                                //     //                         i]
-                                                //     //                     .status
-                                                //     //                     .toString() ==
-                                                //     //                 "verified")
-                                                //     //             ? Colors.green
-                                                //     //             : Colors.red,
-                                                //     //     borderRadius:
-                                                //     //         BorderRadius
-                                                //     //             .circular(
-                                                //     //       MySize.size15!,
-                                                //     //     ),
-                                                //     //   ),
-                                                //     //   child: Text(
-                                                //     //     (controller
-                                                //     //                 .allHolidayList[
-                                                //     //                     i]
-                                                //     //                 .status
-                                                //     //                 .toString() ==
-                                                //     //             "in_verify")
-                                                //     //         ? "Pending"
-                                                //     //         : (controller
-                                                //     //                     .allHolidayList[
-                                                //     //                         i]
-                                                //     //                     .status
-                                                //     //                     .toString() ==
-                                                //     //                 "rejected")
-                                                //     //             ? "Rejected"
-                                                //     //             : "Approved",
-                                                //     //     style: TextStyle(
-                                                //     //       color: Colors.white,
-                                                //     //       fontWeight:
-                                                //     //           FontWeight.w500,
-                                                //     //       fontSize:
-                                                //     //           MySize.size16,
-                                                //     //     ),
-                                                //     //   ),
-                                                //     // ),
-                                                //   ],
-                                                // ),
-                                                // Space.height(9),
                                               ],
                                             ),
                                           );
@@ -376,6 +269,79 @@ class ApplyHolidayView extends GetWidget<ApplyHolidayController> {
             ],
           );
         });
+  }
+
+  addHoliday(
+      {required BuildContext context,
+      required ApplyHolidayController controller}) {
+    DateTime fromDate = controller.range.value.startDate!;
+    DateTime? toDate;
+    if (controller.range.value.endDate != null) {
+      toDate = controller.range.value.endDate!;
+    } else {
+      toDate = controller.range.value.startDate!;
+    }
+
+    bool base = false;
+    controller.allHolidayList.forEach((element) {
+      if ((toDate!.isBefore(getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')) &&
+              fromDate.isAfter(getDateFromString(element.date1!,
+                  formatter: 'yyyy-MM-dd'))) ||
+          (toDate.isBefore(
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')) &&
+              toDate.isAfter(getDateFromString(element.date1!,
+                  formatter: 'yyyy-MM-dd'))) ||
+          (fromDate.isBefore(
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')) &&
+              fromDate.isAfter(getDateFromString(element.date1!,
+                  formatter: 'yyyy-MM-dd'))) ||
+          (DateTime(
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')
+                      .year,
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')
+                      .month,
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')
+                      .day) ==
+              DateTime(toDate.year, toDate.month, toDate.day)) ||
+          (DateTime(
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd')
+                      .year,
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd').month,
+                  getDateFromString(element.date2!, formatter: 'yyyy-MM-dd').day) ==
+              DateTime(fromDate.year, fromDate.month, fromDate.day)) ||
+          (DateTime(
+                getDateFromString(element.date1!, formatter: 'yyyy-MM-dd').year,
+                getDateFromString(element.date1!, formatter: 'yyyy-MM-dd')
+                    .month,
+                getDateFromString(element.date1!, formatter: 'yyyy-MM-dd').day,
+              ) ==
+              DateTime(
+                toDate.year,
+                toDate.month,
+                toDate.day,
+              )) ||
+          (DateTime(
+                getDateFromString(element.date1!, formatter: 'yyyy-MM-dd').year,
+                getDateFromString(element.date1!, formatter: 'yyyy-MM-dd')
+                    .month,
+                getDateFromString(element.date1!, formatter: 'yyyy-MM-dd').day,
+              ) ==
+              DateTime(
+                fromDate.year,
+                fromDate.month,
+                fromDate.day,
+              ))) {
+        // isDateBetween = true;
+        base = true;
+      }
+    });
+    if (!base) {
+      controller.callApiForApplyHolidayEntry(context: context);
+    } else {
+      app.resolve<CustomDialogs>().getDialog(
+          title: "Leave", desc: "Already leave applied on selected day.");
+    }
+    ;
   }
 
   _asyncConfirmDialog(BuildContext context, int index, controller) async {
