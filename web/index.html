@@ -124,10 +124,8 @@
       var newPx_ratio = window.devicePixelRatio || window.screen.availWidth / document.documentElement.clientWidth;
       if(newPx_ratio != px_ratio){
           px_ratio = newPx_ratio;
-          console.log("zooming");
           return true;
       }else{
-          console.log("just resizing");
           return false;
       }
   }

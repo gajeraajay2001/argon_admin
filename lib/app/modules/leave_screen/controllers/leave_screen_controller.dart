@@ -12,11 +12,17 @@ import 'package:get/get.dart' hide FormData;
 import '../../../../main.dart';
 
 class LeaveScreenController extends GetxController {
+  TextEditingController searchController = TextEditingController();
   RxBool hasData = false.obs;
+  RxBool isSearchOn = false.obs;
+
   RxList<LeaveData> allLeaveList = RxList<LeaveData>([]);
   RxList<LeaveData> dummyLeaveList = RxList<LeaveData>([]);
   RxList filterList = ["All", "Pending", "Approved", "Rejected"].obs;
   RxString selectedFilter = "All".obs;
+  RxList statusList = ["Approved", "Rejected"].obs;
+
+  RxString selectedStatusFilter = "".obs;
   @override
   void onInit() {
     getAllLeaves(context: Get.context!);
@@ -49,7 +55,6 @@ class LeaveScreenController extends GetxController {
         GetAllLeaveModel res = GetAllLeaveModel.fromJson(jsonDecode(response));
         if (!isNullEmptyOrFalse(res.data)) {
           res.data!.forEach((element) {
-
             allLeaveList.add(element);
             dummyLeaveList.add(element);
           });
